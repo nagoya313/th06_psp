@@ -7,14 +7,15 @@ require('script/replay')
 require('script/score')
 require('script/music')
 require('script/music_table')
+require('script/se_table')
 
 local co
 
 function init()
   co = coroutine.create(logo)
-  add_se('select', 'se/select00.wav')
-  add_se('ok', 'se/ok00.wav')
-  add_se('cancel', 'se/cancel00.wav')
+  for i, se in ipairs(kSeList) do
+    add_se(se.key, se.file)
+  end
 end
 
 function update()
