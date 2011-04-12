@@ -6,42 +6,51 @@ local kTitleSelectMenuImage = 'image/title01s.dds'
 local kTitleLogoWhiteImage = 'image/title02.dds'
 local kTitleLogoRedImage = 'image/title03.dds'
 local kMenuTable = {
-  {key = 'play', select_key = 'select_play', size = 40, u = 0, v = 0},
-  {key = 'extra', select_key = 'select_extra', size = 88, u = 40, v = 0},
-  {key = 'plactice', select_key = 'select_plactice', size = 96, u = 0, v = 96}, 
-  {key = 'replay', select_key = 'select_replay', size = 48, u = 0, v = 16},
-  {key = 'score', select_key = 'select_score', size = 48, u = 48, v = 16},
-  {key = 'music', select_key = 'select_music', size = 80, u = 48, v = 80},
-  {key = 'option', select_key = 'select_option', size = 48, u = 0, v = 32}
+  {key = 'play', select_key = 'select_play', width = 40, u = 0, v = 0},
+  {key = 'extra', select_key = 'select_extra', width = 88, u = 40, v = 0},
+  {key = 'plactice', select_key = 'select_plactice', width = 96, u = 0, v = 96}, 
+  {key = 'replay', select_key = 'select_replay', width = 48, u = 0, v = 16},
+  {key = 'score', select_key = 'select_score', width = 48, u = 48, v = 16},
+  {key = 'music', select_key = 'select_music', width = 80, u = 48, v = 80},
+  {key = 'option', select_key = 'select_option', width = 48, u = 0, v = 32}
 }
+local kLogoWidth = 48
+local kLogoHeight = 48
+local kLogoX = 48
+local kLogoY = 24
+local kLogoYDifference = 40
+local kMenuX = 336
+local kMenuXDifference = 4
+local kMenuY = 112
+local kMenuYDifferebce = 16
+local kMenuHeight = 16
 local kMenuMax = 7
 local kMenuMin = 1
-local menu_select = 1
 
-local function init()
+local function init(menu_select)
   add_back_image(kTitle, kTitleImage)
   for i, title_logo in ipairs(kTitleLogoTable) do
     i = i - 1
     if (i == 2) then
       add_image(title_logo, kTitleLogoRedImage)
-      set_actor_uv(title_logo, 0, 0, 48, 48)
+      set_actor_uv(title_logo, 0, 0, kLogoWidth, kLogoHeight)
     else
       add_image(title_logo, kTitleLogoWhiteImage)
       local j = i > 2 and i - 1 or i
-      set_actor_uv(title_logo, (j % 2) * 48, math.floor(j / 2) * 48, 48, 48)
+      set_actor_uv(title_logo, (j % 2) * kLogoWidth, math.floor(j / 2) * kLogoHeight, kLogoWidth, kLogoHeight)
     end
-    resize_actor(title_logo, 48, 48)
-    move_actor(title_logo, 48, 24 + 40 * i)
+    resize_actor(title_logo, kLogoWidth, kLogoHeight)
+    move_actor(title_logo, kLogoX, kLogoY + kLogoYDifference * i)
   end
   for i, menu in ipairs(kMenuTable) do
     add_image(menu.key, kTitleMenuImage)
-    move_actor(menu.key, 336 - i * 4, 112 + i * 16)
-    resize_actor(menu.key, menu.size, 16)
-    set_actor_uv(menu.key, menu.u, menu.v, menu.size, 16)
+    move_actor(menu.key, kMenuX - i * kMenuXDifference, kMenuY + i * kMenuYDifferebce)
+    resize_actor(menu.key, menu.width, kMenuHeight)
+    set_actor_uv(menu.key, menu.u, menu.v, menu.width, kMenuHeight)
     add_image(menu.select_key, kTitleSelectMenuImage)
-    move_actor(menu.select_key, 336 - i * 4, 112 + i * 16)
-    resize_actor(menu.select_key, menu.size, 16)
-    set_actor_uv(menu.select_key, menu.u, menu.v, menu.size, 16)
+    move_actor(menu.select_key, kMenuX - i * kMenuXDifference, kMenuY + i * kMenuYDifferebce)
+    resize_actor(menu.select_key, menu.width, kMenuHeight)
+    set_actor_uv(menu.select_key, menu.u, menu.v, menu.width, kMenuHeight)
     if (i == menu_select) then
       sleep_actor(menu.key)
     else
@@ -71,79 +80,81 @@ local function change_not_select(select)
   sleep_actor(kMenuTable[select].select_key)
 end
 
-local function select_up()
+local function select_up(menu_select)
   stop_se('select')
   play_se('select', 1)
   change_not_select(menu_select)
   menu_select = menu_select - 1 < kMenuMin and kMenuMax or menu_select - 1
   change_select(menu_select)
+  return menu_select
 end
 
-local function select_down()
+local function select_down(menu_select)
   stop_se('select')
   play_se('select', 1)
   change_not_select(menu_select)
   menu_select = menu_select + 1 > kMenuMax and kMenuMin or menu_select + 1
   change_select(menu_select)
+  return menu_select
 end
 
-local function play()
+local function play_mode(menu_select)
   stop_se('ok')
   play_se('ok', 1)
   coroutine.yield()
   clean()
-  mode()
+  mode(menu_select)
 end
 
-local function extra()
+local function extra_mode(menu_select)
 end
 
-local function plactice()
+local function plactice_mode(menu_select)
 end
 
-local function replay()
+local function replay_mode(menu_select)
   stop_se('ok')
   play_se('ok', 1)
   coroutine.yield()
   clean()
-  replay()
+  replay(menu_select)
 end
 
-local function score()
+local function score_mode(menu_select)
   stop_se('ok')
   play_se('ok', 1)
   coroutine.yield()
   clean()
-  score()
+  score(menu_select)
 end
 
-local function music()
+local function music_mode(menu_select)
   stop_se('ok')
   play_se('ok', 1)
   coroutine.yield()
   clean()
-  music()
+  music(menu_select)
 end
 
-local function option()
+local function option_mode(menu_select)
 end
 
-local kFunctorTable = {play, extra, plactice, replay, score, music, option}
+local kFunctorTable = {play_mode, extra_mode, plactice_mode, replay_mode, score_mode, music_mode, option_mode}
 
-local function update()
+local function update(menu_select)
   while true do
     if key_triger(kDown) == true then
-      select_down()
+      menu_select = select_down(menu_select)
     elseif key_triger(kUp) == true then
-      select_up()
+      menu_select = select_up(menu_select)
     elseif key_triger(kCircle) == true then
-      kFunctorTable[menu_select]()
+      kFunctorTable[menu_select](menu_select)
     end
     coroutine.yield()
   end
 end
 
-function title()
-  init()
-  update()
+function title(menu_select)
+  init(menu_select)
+  update(menu_select)
 end
