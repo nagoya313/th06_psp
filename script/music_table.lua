@@ -17,3 +17,19 @@ kMusicList = {
   {offset = 0x186D40, file = 'bgm/th06_16.wav'},
   {offset = 0x0E9E20, file = 'bgm/th06_17.wav'}
 }
+
+kTitleMusic = 1
+kStage1Music = 2
+kStage1BossMusic = 3
+kStage2Music = 4
+kStage2BossMusic = 5
+kStage3Music = 6
+kStage3BossMusic = 7
+kStage4Music = 8
+kStage4BossMusic = 9
+kStage5Music = 10
+kStage5BossMusic = 11
+kStage6Music = 12
+kStage6BossMusic = 13
+kExtraStageMusic = 14
+kExtraStageBossMusic = 15
