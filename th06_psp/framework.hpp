@@ -60,7 +60,7 @@ class framework : private boost::noncopyable {
     lua_register(lua_.get(), "sleep_actor", &glue::sleep_actor);
     lua_register(lua_.get(), "active_actor", &glue::active_actor);
     lua_register(lua_.get(), "erase_actor", &glue::erase_actor);
-    lua_register(lua_.get(), "set_bgm", &glue::add_bgm);
+    lua_register(lua_.get(), "set_bgm", &glue::set_bgm);
     lua_register(lua_.get(), "play_bgm", &glue::play_bgm);
     lua_register(lua_.get(), "stop_bgm", &glue::stop_bgm);
     lua_register(lua_.get(), "pause_bgm", &glue::pause_bgm);
