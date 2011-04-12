@@ -1,16 +1,20 @@
-mode_table = {'easy', 'normal', 'hard', 'lunatic'}
-local mode_select = 1
+kModeList = {'easy', 'normal', 'hard', 'lunatic'}
+local kSelect = 'select'
+local kSelectImageFileName = 'image/select00.dds'
+local kMode = 'mode'
+local kModeImageFileNameList = {'image/select01.dds', 'image/select02.dds'}
+local kModeMin = 1
+local kModeMax = 4
 
-local function init()
-  add_back_image('select', 'image/select00.dds')
-  add_image('mode', 'image/select01.dds')
-  resize_actor('mode', 128, 32)
-  move_actor('mode', 172, 16)
-  set_actor_uv('mode', 0, 96, 128, 32)
-  local mode_name = {'image/select01.dds', 'image/select02.dds'}
-  for i, mode in ipairs(mode_table) do
+local function init(mode_select)
+  add_back_image(kSelect, kSelectImageFileName)
+  add_image(kMode, kModeImageFileNameList[1])
+  resize_actor(kMode, 128, 32)
+  move_actor(kMode, 172, 16)
+  set_actor_uv(kMode, 0, 96, 128, 32)
+  for i, mode in ipairs(kModeList) do
     i = i - 1
-    add_bright_image(mode, mode_name[math.floor(i / 2) + 1])
+    add_bright_image(mode, kModeImageFileNameList[math.floor(i / 2) + 1])
     resize_actor(mode, 128, 48)
     move_actor(mode, 172, 48 + 50 * i)
     set_actor_uv(mode, 0, 48 * math.floor(i % 2), 128, 48)
@@ -21,70 +25,89 @@ local function init()
 end
 
 local function clean()
-  erase_actor('select')
-  erase_actor('mode')
-  for i, mode in ipairs(mode_table) do
+  erase_actor(kSelect)
+  erase_actor(kMode)
+  for i, mode in ipairs(kModeList) do
     erase_actor(mode)
   end
 end
 
-local function clean2(mode_select)
-  erase_actor('mode')
-  for i, mode in ipairs(mode_table) do
+local function clean_to_player_select(mode_select)
+  erase_actor(kMode)
+  for i, mode in ipairs(kModeList) do
     if i ~= mode_select then
       sleep_actor(mode)
     end
   end
 end
 
-local function update()
+local function reset(mode_select)
+  add_image(kMode, kModeImageFileNameList[1])
+  resize_actor(kMode, 128, 32)
+  move_actor(kMode, 172, 16)
+  set_actor_uv(kMode, 0, 96, 128, 32)
+  for i, mode in ipairs(kModeList) do
+    if i == mode_select then
+      move_actor(mode, 172, 48 + 50 * (mode_select - 1))
+      set_actor_alpha(mode, 0xFF)
+    else
+      active_actor(mode)
+    end
+  end
+end
+
+local function select_up(mode_select)
+  stop_se('select')
+  play_se('select', 1)
+  set_actor_alpha(kModeList[mode_select], 0x80)
+  mode_select = mode_select - 1 < kModeMin and kModeMax or mode_select - 1
+  set_actor_alpha(kModeList[mode_select], 0xFF)
+  return mode_select
+end
+
+local function select_down(mode_select)
+  stop_se('select')
+  play_se('select', 1)
+  set_actor_alpha(kModeList[mode_select], 0x80)
+  mode_select = mode_select + 1 > kModeMax and kModeMin or mode_select + 1
+  set_actor_alpha(kModeList[mode_select], 0xFF)
+  return mode_select
+end
+
+local function decide(mode_select)
+  stop_se('ok')
+  play_se('ok', 1)
+  coroutine.yield()
+  clean_to_player_select(mode_select)
+  player_select(mode_select)
+  reset(mode_select)
+end
+
+local function cancel(menu_select)
+  stop_se('cancel')
+  play_se('cancel', 1)
+  coroutine.yield()
+  clean()
+  title(menu_select)
+end
+
+local function update(menu_select, mode_select)
   while true do
     if key_triger(kDown) == true then
-      stop_se('select')
-      play_se('select', 1)
-      set_actor_alpha(mode_table[mode_select], 0x80)
-      mode_select = mode_select + 1 > 4 and 1 or mode_select + 1
-      set_actor_alpha(mode_table[mode_select], 0xFF)
+      mode_select = select_down(mode_select)
     elseif key_triger(kUp) == true then
-      stop_se('select')
-      play_se('select', 1)
-      set_actor_alpha(mode_table[mode_select], 0x80)
-      mode_select = mode_select - 1 < 1 and 4 or mode_select - 1
-      set_actor_alpha(mode_table[mode_select], 0xFF)
+      mode_select = select_up(mode_select)
     elseif key_triger(kCircle) == true then
-      stop_se('ok')
-      play_se('ok', 1)
-      coroutine.yield()
-      clean2(mode_select)
-      player_select(mode_select)
+      decide(mode_select)
     elseif key_triger(kCross) == true then
-      stop_se('cancel')
-      play_se('cancel', 1)
-      coroutine.yield()
-      clean()
-      title()
+      cancel(menu_select)
     end
     coroutine.yield()
   end
 end
 
-function mode2(mode_select)
-  add_image('mode', 'image/select01.dds')
-  resize_actor('mode', 128, 32)
-  move_actor('mode', 172, 16)
-  set_actor_uv('mode', 0, 96, 128, 32)
-  for i, mode in ipairs(mode_table) do
-    if i == mode_select then
-      move_actor(mode, 172, 48 + 50 * (mode_select - 1))
-      set_actor_alpha(mode_table[mode_select], 0xFF)
-    else
-      active_actor(mode)
-    end
-  end
-  update()
-end
-
-function mode()
-  init()
-  update()
+function mode(menu_select)
+  local mode_select = 1
+  init(mode_select)
+  update(menu_select, mode_select)
 end
