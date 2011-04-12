@@ -6,6 +6,7 @@ require('script/spell_select')
 require('script/replay')
 require('script/score')
 require('script/music')
+require('script/option')
 require('script/music_table')
 require('script/se_table')
 

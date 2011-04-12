@@ -70,6 +70,47 @@ local function clean()
   end
 end
 
+local function clean_to_option()
+  for i, title_logo in ipairs(kTitleLogoTable) do
+    erase_actor(title_logo)
+  end
+  for i, menu in ipairs(kMenuTable) do
+    erase_actor(menu.key)
+    erase_actor(menu.select_key)
+  end
+end
+
+local function reset(menu_select)
+  for i, title_logo in ipairs(kTitleLogoTable) do
+    i = i - 1
+    if (i == 2) then
+      add_image(title_logo, kTitleLogoRedImage)
+      set_actor_uv(title_logo, 0, 0, kLogoWidth, kLogoHeight)
+    else
+      add_image(title_logo, kTitleLogoWhiteImage)
+      local j = i > 2 and i - 1 or i
+      set_actor_uv(title_logo, (j % 2) * kLogoWidth, math.floor(j / 2) * kLogoHeight, kLogoWidth, kLogoHeight)
+    end
+    resize_actor(title_logo, kLogoWidth, kLogoHeight)
+    move_actor(title_logo, kLogoX, kLogoY + kLogoYDifference * i)
+  end
+  for i, menu in ipairs(kMenuTable) do
+    add_image(menu.key, kTitleMenuImage)
+    move_actor(menu.key, kMenuX - i * kMenuXDifference, kMenuY + i * kMenuYDifferebce)
+    resize_actor(menu.key, menu.width, kMenuHeight)
+    set_actor_uv(menu.key, menu.u, menu.v, menu.width, kMenuHeight)
+    add_image(menu.select_key, kTitleSelectMenuImage)
+    move_actor(menu.select_key, kMenuX - i * kMenuXDifference, kMenuY + i * kMenuYDifferebce)
+    resize_actor(menu.select_key, menu.width, kMenuHeight)
+    set_actor_uv(menu.select_key, menu.u, menu.v, menu.width, kMenuHeight)
+    if (i == menu_select) then
+      sleep_actor(menu.key)
+    else
+      sleep_actor(menu.select_key)
+    end
+  end
+end
+
 local function change_select(select)
   active_actor(kMenuTable[select].select_key)
   sleep_actor(kMenuTable[select].key)
@@ -137,6 +178,12 @@ local function music_mode(menu_select)
 end
 
 local function option_mode(menu_select)
+  stop_se('ok')
+  play_se('ok', 1)
+  coroutine.yield()
+  clean_to_option()
+  option(menu_select)
+  reset(menu_select)
 end
 
 local kFunctorTable = {play_mode, extra_mode, plactice_mode, replay_mode, score_mode, music_mode, option_mode}
