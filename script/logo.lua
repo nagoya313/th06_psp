@@ -18,10 +18,10 @@ local function update()
   end
   coroutine.yield()
   clean()
-  add_bgm(kMusicFileNameList[1], kMusicIntroOffsetList[1])
+  set_bgm(kMusicFileNameList[1], kMusicIntroOffsetList[1])
   play_bgm()
   title()
-local
+end
 
 function logo()
   init()
