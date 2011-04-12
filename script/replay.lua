@@ -1,9 +1,18 @@
+local kSelectImageFileName = 'image/select00.dds'
+local kReplayImageFileName = 'image/replay00.dds'
+local kReplayWidth = 128
+local kReplayHeight = 16
+local kReplayU = 0
+local kReplayV = 0
+local kReplayX = 172
+local kReplayY = 48
+
 local function init()
-  add_back_image('select', 'image/select00.dds')
-  add_image('replay', 'image/replay00.dds')
-  resize_actor('replay', 128, 16)
-  set_actor_uv('replay', 0, 0, 128, 16)
-  move_actor('replay', 172, 48)
+  add_back_image('select', kSelectImageFileName)
+  add_image('replay', kReplayImageFileName)
+  resize_actor('replay', kReplayWidth, kReplayHeight)
+  set_actor_uv('replay', kReplayU, kReplayV, kReplayWidth, kReplayHeight)
+  move_actor('replay', kReplayX, kReplayY)
 end
 
 local function clean()
@@ -11,20 +20,24 @@ local function clean()
   erase_actor('replay')
 end
 
-local function update()
+local function cancel(menu_select)
+  stop_se('cancel')
+  play_se('cancel', 1)
+  coroutine.yield()
+  clean()
+  title(menu_select)
+end
+
+local function update(menu_select)
   while true do
     if key_triger(kCross) == true then
-      stop_se('cancel')
-      play_se('cancel', 1)
-      coroutine.yield()
-      clean()
-      title()
+      cancel(menu_select)
     end
     coroutine.yield()
   end
 end
 
-function replay()
+function replay(menu_select)
   init()
-  update()
+  update(menu_select)
 end
