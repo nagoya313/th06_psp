@@ -6,30 +6,30 @@ local kTitleSelectMenuImage = 'image/title01s.dds'
 local kTitleLogoWhiteImage = 'image/title02.dds'
 local kTitleLogoRedImage = 'image/title03.dds'
 local kMenuTable = {
-  {key = 'play', select_key = 'select_play', width = 40, u = 0, v = 0},
-  {key = 'extra', select_key = 'select_extra', width = 88, u = 40, v = 0},
-  {key = 'plactice', select_key = 'select_plactice', width = 96, u = 0, v = 96}, 
-  {key = 'replay', select_key = 'select_replay', width = 48, u = 0, v = 16},
-  {key = 'score', select_key = 'select_score', width = 48, u = 48, v = 16},
-  {key = 'music', select_key = 'select_music', width = 80, u = 48, v = 80},
-  {key = 'option', select_key = 'select_option', width = 48, u = 0, v = 32}
+  {key = 'play', select_key = 'select_play', width = 80, u = 0, v = 0},
+  {key = 'extra', select_key = 'select_extra', width = 76, u = 80, v = 0},
+  {key = 'plactice', select_key = 'select_plactice', width = 108, u = 0, v = 192}, 
+  {key = 'replay', select_key = 'select_replay', width = 96, u = 0, v = 32},
+  {key = 'score', select_key = 'select_score', width = 96, u = 96, v = 32},
+  {key = 'music', select_key = 'select_music', width = 160, u = 96, v = 160},
+  {key = 'option', select_key = 'select_option', width = 96, u = 0, v = 64}
 }
-local kLogoWidth = 48
-local kLogoHeight = 48
+local kLogoWidth = 96
+local kLogoHeight = 96
 local kLogoX = 48
-local kLogoY = 24
-local kLogoYDifference = 40
+local kLogoY = 0
+local kLogoYDifference = 44
 local kMenuX = 336
 local kMenuXDifference = 4
-local kMenuY = 112
-local kMenuYDifferebce = 16
-local kMenuHeight = 16
+local kMenuY = 40
+local kMenuYDifferebce = 24
+local kMenuHeight = 32
 local kMenuMax = 7
 local kMenuMin = 1
 
 local function init(menu_select)
   add_back_image(kTitle, kTitleImage)
-  for i, title_logo in ipairs(kTitleLogoTable) do
+  --[[for i, title_logo in ipairs(kTitleLogoTable) do
     i = i - 1
     if (i == 2) then
       add_image(title_logo, kTitleLogoRedImage)
@@ -39,9 +39,9 @@ local function init(menu_select)
       local j = i > 2 and i - 1 or i
       set_actor_uv(title_logo, (j % 2) * kLogoWidth, math.floor(j / 2) * kLogoHeight, kLogoWidth, kLogoHeight)
     end
-    resize_actor(title_logo, kLogoWidth, kLogoHeight)
+    resize_actor(title_logo, kLogoWidth / 2, kLogoHeight / 2)
     move_actor(title_logo, kLogoX, kLogoY + kLogoYDifference * i)
-  end
+  end]]
   for i, menu in ipairs(kMenuTable) do
     add_image(menu.key, kTitleMenuImage)
     move_actor(menu.key, kMenuX - i * kMenuXDifference, kMenuY + i * kMenuYDifferebce)
@@ -81,7 +81,7 @@ local function clean_to_option()
 end
 
 local function reset(menu_select)
-  for i, title_logo in ipairs(kTitleLogoTable) do
+  --[[for i, title_logo in ipairs(kTitleLogoTable) do
     i = i - 1
     if (i == 2) then
       add_image(title_logo, kTitleLogoRedImage)
@@ -93,7 +93,7 @@ local function reset(menu_select)
     end
     resize_actor(title_logo, kLogoWidth, kLogoHeight)
     move_actor(title_logo, kLogoX, kLogoY + kLogoYDifference * i)
-  end
+  end]]
   for i, menu in ipairs(kMenuTable) do
     add_image(menu.key, kTitleMenuImage)
     move_actor(menu.key, kMenuX - i * kMenuXDifference, kMenuY + i * kMenuYDifferebce)

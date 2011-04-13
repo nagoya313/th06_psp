@@ -18,10 +18,23 @@ class actor : private boost::noncopyable {
   virtual ~actor() {}
   virtual void draw() = 0;
   virtual void move(float x, float y) {}
+  virtual void move_to(float x, float y) {}
   virtual void resize(float width, float height) {}
   virtual void set_uv(float u, float v, float width, float height) {}
   virtual void set_color(boost::uint8_t red, boost::uint8_t green, boost::uint8_t blue) {}
   virtual void set_alpha(boost::uint8_t alpha) {}
+
+  virtual float x() const {
+    return 0.f;
+  }
+
+  virtual float y() const {
+    return 0.f;
+  }
+
+  virtual bool exist() const {
+    return true;
+  }
 
   bool is_active() const {
     return is_active_;

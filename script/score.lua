@@ -4,9 +4,9 @@ local kDreanImageFileName = 'image/result00.dds'
 local function init()
   add_back_image('score', kResultImageFileName)
   add_image('dream', kDreanImageFileName)
-  resize_actor('dream', 128, 24)
-  set_actor_uv('dream', 0, 0, 128, 24)
-  move_actor('dream', 32, 32)
+  resize_actor('dream', 256, 48)
+  set_actor_uv('dream', 0, 0, 256, 48)
+  move_actor('dream', 16, 16)
 end
 
 local function clean()

@@ -4,18 +4,18 @@ local kTitleMenuImageList = {
   {no_select = 'image/title04.dds', select = 'image/title04s.dds'}
 }
 local kMenuTable = {
-  {key = 'player', select_key = 'select_play', width = 48, u = 48, v = 32, file = 1},
-  {key = 'bomb', select_key = 'select_extra', width = 40, u = 0, v = 48, file = 1},
-  {key = 'bgm', select_key = 'select_plactice', width = 40, u = 40, v = 48, file = 1}, 
-  {key = 'sound', select_key = 'select_replay', width = 48, u = 80, v = 48, file = 1},
-  {key = 'reset', select_key = 'select_score', width = 86, u = 0, v = 64, file = 3},
-  {key = 'key_config', select_key = 'select_music', width = 72, u = 0, v = 96, file = 2},
-  {key = 'quit', select_key = 'select_option', width = 32, u = 48, v = 48, file = 3}
+  {key = 'player', select_key = 'select_play', width = 96, u = 96, v = 64, file = 1},
+  {key = 'bomb', select_key = 'select_extra', width = 80, u = 0, v = 96, file = 1},
+  {key = 'bgm', select_key = 'select_plactice', width = 80, u = 80, v = 96, file = 1}, 
+  {key = 'sound', select_key = 'select_replay', width = 96, u = 160, v = 96, file = 1},
+  {key = 'reset', select_key = 'select_score', width = 172, u = 0, v = 128, file = 3},
+  {key = 'key_config', select_key = 'select_music', width = 144, u = 0, v = 192, file = 2},
+  {key = 'quit', select_key = 'select_option', width = 64, u = 96, v = 96, file = 3}
 }
-local kMenuX = 64
-local kMenuY = 16
-local kMenuYDifferebce = 24
-local kMenuHeight = 16
+local kMenuX = 48
+local kMenuY = -20
+local kMenuYDifferebce = 32
+local kMenuHeight = 32
 local kMenuMax = 7
 local kMenuMin = 1
 

@@ -29,9 +29,9 @@ class bright_image : public actor {
     sceGuTexMode(GU_PSM_8888, 0, 0, GU_FALSE);
     sceGuEnable(GU_BLEND);
     sceGuBlendFunc(GU_ADD, GU_SRC_ALPHA, GU_ONE_MINUS_SRC_ALPHA, 0, 0);
-    sceGuTexImage(0, 128, 128, 128, data_.get().data());
+    sceGuTexImage(0, 256, 256, 256, data_.get().data());
     sceGuTexFunc(GU_TFX_MODULATE, GU_TCC_RGBA);
-    sceGuTexFilter(GU_NEAREST, GU_NEAREST);
+    sceGuTexFilter(GU_LINEAR, GU_LINEAR);
     bright_texture_vertex * const vertex = static_cast<bright_texture_vertex *>(sceGuGetMemory(2 * sizeof(*vertex)));
     vertex[0].u = u_;
     vertex[0].v = v_;
@@ -48,9 +48,14 @@ class bright_image : public actor {
     sceGuDrawArray(GU_SPRITES, GU_TEXTURE_32BITF | GU_COLOR_8888 | GU_VERTEX_32BITF | GU_TRANSFORM_2D, 2, 0, vertex);
   }
 
-  virtual void move(const float x, const float y) {
+  virtual void move_to(const float x, const float y) {
     x_ = x;
     y_ = y;
+  }
+
+  virtual void move(const float x, const float y) {
+    x_ += x;
+    y_ += y;
   }
 
   virtual void resize(const float width, const float height) {

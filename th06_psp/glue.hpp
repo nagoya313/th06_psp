@@ -1,16 +1,25 @@
 #ifndef TH06_PSP_GLUE_HPP_
 #define TH06_PSP_GLUE_HPP_
 #include <fstream>
+#include <vector>
 #include <lua.hpp>
 #include "fwd.hpp"
 
 namespace th06_psp { namespace glue {
-void init(actor_list_type *actor_list, const bgm_list_type &bgm_list_, se_list_type *se_list, std::ofstream *log);
+void init(list_list *object_list);
+int add_player(lua_State *lua);
+int create_shot(lua_State *lua);
+int add_shot(lua_State *lua);
+int add_enemy(lua_State *lua);
+int clear_object_list(lua_State *lua);
 int add_back_image(lua_State *lua);
 int add_image(lua_State *lua);
 int add_bright_image(lua_State *lua);
 int add_box(lua_State *lua);
 int add_text(lua_State *lua);
+int clear_actor_list(lua_State *lua);
+int get_actor_position(lua_State *lua);
+int move_to_actor(lua_State *lua);
 int move_actor(lua_State *lua);
 int resize_actor(lua_State *lua);
 int set_actor_uv(lua_State *lua);

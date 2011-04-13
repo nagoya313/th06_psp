@@ -11,11 +11,6 @@ class initializer : private boost::noncopyable {
   ~initializer();
 };
 
-struct bgm_data {
-  SceUID file_id;
-  int intro_offset;
-};
-
 class bgm : private boost::noncopyable {
  public:
   bgm(const char *file_name, int offset);
@@ -23,10 +18,15 @@ class bgm : private boost::noncopyable {
   void play(int channel);
   void stop();
   void pause();
+  bool is_stop() const;
+  SceUID file_id() const;
+  int intro_offset() const;
 
  private:
   int channel_;
-  bgm_data data_;
+  bool is_stop_;
+  const SceUID file_id_;
+  const int intro_offset_;
 };
 
 class se : private boost::noncopyable {

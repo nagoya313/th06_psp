@@ -3,6 +3,9 @@ local kLogoImageNama = 'image/th06logo.dds'
 
 local function init()
   add_back_image(kLogo, kLogoImageNama)
+  for i, se in ipairs(kSeList) do
+    add_se(se.key, se.file)
+  end
 end
 
 local function clean()

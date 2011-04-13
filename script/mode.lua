@@ -1,7 +1,7 @@
 kModeList = {'easy', 'normal', 'hard', 'lunatic'}
-local kSelect = 'select'
+kSelect = 'select'
 local kSelectImageFileName = 'image/select00.dds'
-local kMode = 'mode'
+kMode = 'mode'
 local kModeImageFileNameList = {'image/select01.dds', 'image/select02.dds'}
 local kModeMin = 1
 local kModeMax = 4
@@ -9,15 +9,15 @@ local kModeMax = 4
 local function init(mode_select)
   add_back_image(kSelect, kSelectImageFileName)
   add_image(kMode, kModeImageFileNameList[1])
-  resize_actor(kMode, 128, 32)
-  move_actor(kMode, 172, 16)
-  set_actor_uv(kMode, 0, 96, 128, 32)
+  resize_actor(kMode, 256, 64)
+  move_to_actor(kMode, 112, -8)
+  set_actor_uv(kMode, 0, 192, 256, 64)
   for i, mode in ipairs(kModeList) do
     i = i - 1
     add_bright_image(mode, kModeImageFileNameList[math.floor(i / 2) + 1])
-    resize_actor(mode, 128, 48)
-    move_actor(mode, 172, 48 + 50 * i)
-    set_actor_uv(mode, 0, 48 * math.floor(i % 2), 128, 48)
+    resize_actor(mode, 172, 64)
+    move_to_actor(mode, 154, 40 + 56 * i)
+    set_actor_uv(mode, 0, 96 * math.floor(i % 2), 256, 96)
     if i ~= mode_select - 1 then 
       set_actor_alpha(mode, 0x80)
     end
@@ -43,12 +43,12 @@ end
 
 local function reset(mode_select)
   add_image(kMode, kModeImageFileNameList[1])
-  resize_actor(kMode, 128, 32)
-  move_actor(kMode, 172, 16)
-  set_actor_uv(kMode, 0, 96, 128, 32)
+  resize_actor(kMode, 256, 64)
+  move_to_actor(kMode, 112, -8)
+  set_actor_uv(kMode, 0, 192, 256, 64)
   for i, mode in ipairs(kModeList) do
     if i == mode_select then
-      move_actor(mode, 172, 48 + 50 * (mode_select - 1))
+      move_to_actor(mode, 154, 40 + 56 * (mode_select - 1))
       set_actor_alpha(mode, 0xFF)
     else
       active_actor(mode)

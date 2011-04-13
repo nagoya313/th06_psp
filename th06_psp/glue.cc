@@ -7,9 +7,11 @@
 #include "box.hpp"
 #include "controller.hpp"
 #include "image.hpp"
+#include "shot.hpp"
 #include "text.hpp"
 
 namespace th06_psp { namespace global {
+std::vector<actor_ptr> *object_list;
 actor_list_type *actor_list;
 se_list_type *se_list;
 bgm_list_type bgm_list;
@@ -21,11 +23,25 @@ void throw_exception(const std::exception &error) {}
 }
 
 namespace th06_psp { namespace glue {
-void init(actor_list_type * const list, const bgm_list_type &bgm, se_list_type * const se, std::ofstream * const log) {
-  global::actor_list = list;
-  global::bgm_list = bgm;
-  global::se_list = se;
-  global::log = log;
+void init(list_list * const list) {
+  global::object_list = &list->object_list;
+  global::actor_list = &list->actor_list;
+  global::bgm_list = list->bgm_list;
+  global::se_list = &list->se_list;
+  global::log = &list->log;
+}
+
+int add_shot(lua_State * const lua) {
+  const char * const file_name = lua_tostring(lua, 1);
+  const float x = lua_tonumber(lua, 2);
+  const float y = lua_tonumber(lua, 3);
+  const float width = lua_tonumber(lua, 4);
+  const float height = lua_tonumber(lua, 5);
+  const float u = lua_tonumber(lua, 6);
+  const float v = lua_tonumber(lua, 7);
+  lua_settop(lua, 0);
+  global::object_list->push_back(boost::make_shared<shot>(file_name, x, y, width, height, u, v));
+  return 0;
 }
 
 int add_back_image(lua_State * const lua) {
@@ -70,6 +86,30 @@ int add_text(lua_State * const lua) {
   const std::string str = lua_tostring(lua, 4);
   lua_settop(lua, 0);
   global::actor_list->push_back(actor_element(key, boost::make_shared<text>(x, y, str)));
+  return 0;
+}
+
+int clear_actor_list(lua_State * const lua) {
+  global::actor_list->clear();
+  return 0;
+}
+
+int get_actor_position(lua_State * const lua) {
+  const std::string key = lua_tostring(lua, 1);
+  lua_settop(lua, 0);
+  const actor_list_type::index<actor_id>::type &list = global::actor_list->get<actor_id>();
+  lua_pushnumber(lua, list.find(key)->element->x());
+  lua_pushnumber(lua, list.find(key)->element->y());
+  return 2;
+}
+
+int move_to_actor(lua_State * const lua) {
+  const std::string key = lua_tostring(lua, 1);
+  const float x = lua_tonumber(lua, 2);
+  const float y = lua_tonumber(lua, 3);
+  lua_settop(lua, 0);
+  actor_list_type::index<actor_id>::type &list = global::actor_list->get<actor_id>();
+  list.find(key)->element->move_to(x, y);
   return 0;
 }
 

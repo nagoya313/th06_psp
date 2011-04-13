@@ -14,18 +14,12 @@ class back_image : public actor {
     const SceUID fd = sceIoOpen(file_name, PSP_O_RDONLY, 0777);
     if (fd >= 0) {
       sceIoLseek(fd, 0x80, PSP_SEEK_CUR);
-      if (sceIoRead(fd, back_image_pixel_, 480 * 272 * 4) < 0) {
-        *global::log << "file read error" << std::endl;
-      }
+      sceIoRead(fd, back_image_pixel_, 480 * 272 * 4);
       sceIoClose(fd);
-    } else {
-      *global::log << "file loading error" << std::endl;
-    }
-    *global::log << "file_name: " << file_name << ", address: " << back_image_pixel_ << std::endl;
+    } 
   }
 
   virtual ~back_image() {
-    *global::log << "dtr file_name: " << name_ << ", address: " << back_image_pixel_ << std::endl;
     std::free(back_image_pixel_);
   }
 

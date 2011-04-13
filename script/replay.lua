@@ -1,11 +1,11 @@
 local kSelectImageFileName = 'image/select00.dds'
 local kReplayImageFileName = 'image/replay00.dds'
-local kReplayWidth = 128
-local kReplayHeight = 16
+local kReplayWidth = 256
+local kReplayHeight = 32
 local kReplayU = 0
 local kReplayV = 0
-local kReplayX = 172
-local kReplayY = 48
+local kReplayX = 112
+local kReplayY = 16
 
 local function init()
   add_back_image('select', kSelectImageFileName)

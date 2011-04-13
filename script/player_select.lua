@@ -9,16 +9,16 @@ local kPlayerMin = 1
 local kPlayerMax = 3
 
 local function init(mode_select, character_select)
-  move_actor(kModeList[mode_select], 32, 192)
+  move_to_actor(kModeList[mode_select], 4, 192)
   set_actor_alpha(kModeList[mode_select], 0x80)
   for i, player in ipairs(kPlayerList) do
     add_bright_image(player.key, player.file)
-    resize_actor(player.key, 128, 128)
-    set_actor_uv(player.key, 0, 0, 128, 128)
+    resize_actor(player.key, 160, 160)
+    set_actor_uv(player.key, 0, 0, 256, 256)
     if i % 2 == 0 then
-      move_actor(player.key, 256, 160)
+      move_actor(player.key, 256, 140)
     else
-      move_actor(player.key, 256, 32)
+      move_actor(player.key, 256, -20)
     end
   end
   if character_select == 1 then
@@ -29,9 +29,9 @@ local function init(mode_select, character_select)
     sleep_actor(kPlayerList[2].key)
   end
   add_image('player_select', kPlayerSelectImageFileName)
-  resize_actor('player_select', 128, 32)
-  move_actor('player_select', 172, 24)
-  set_actor_uv('player_select', 0, 0, 128, 32)
+  resize_actor('player_select', 256, 64)
+  move_actor('player_select', 112, 8)
+  set_actor_uv('player_select', 0, 0, 256, 64)
 end
 
 local function clean()
@@ -42,14 +42,14 @@ local function clean()
 end
 
 local function reset(character_select)
-  move_actor(kPlayerList[character_select].key, 256, 32)
-  move_actor(kPlayerList[character_select + 1].key, 256, 160)
+  move_to_actor(kPlayerList[character_select].key, 256, -20)
+  move_to_actor(kPlayerList[character_select + 1].key, 256, 140)
   set_actor_alpha(kPlayerList[character_select].key, 0xFF)
   set_actor_alpha(kPlayerList[character_select + 1].key, 0xFF)
   add_image('player_select', kPlayerSelectImageFileName)
-  resize_actor('player_select', 128, 32)
-  move_actor('player_select', 172, 24)
-  set_actor_uv('player_select', 0, 0, 128, 32)
+  resize_actor('player_select', 256, 64)
+  move_actor('player_select', 112, 8)
+  set_actor_uv('player_select', 0, 0, 256, 64)
 end
 
 local function clean_to_spell_select()

@@ -1,5 +1,6 @@
 #ifndef TH06_PSP_FWD_HPP_
 #define TH06_PSP_FWD_HPP_
+#include <fstream>
 #include <string>
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
@@ -20,7 +21,15 @@ typedef boost::multi_index::multi_index_container<
                       boost::multi_index::member<actor_element, std::string, &actor_element::id> > > > actor_list_type;
 
 typedef boost::unordered_map<std::string, boost::shared_ptr<psp::audio::se> > se_list_type;
-typedef boost::shared_ptr<psp::audio::bgm> bgm_list_type; 
+typedef boost::shared_ptr<psp::audio::bgm> bgm_list_type;
+
+struct list_list {
+  std::vector<actor_ptr> object_list;
+  actor_list_type actor_list;
+  bgm_list_type bgm_list;
+  se_list_type se_list;
+  std::ofstream log;
+};
 }
 
 
